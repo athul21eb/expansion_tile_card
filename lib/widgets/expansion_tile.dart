@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
-class Games extends StatelessWidget {
+class Games extends StatefulWidget {
   final String title;
   final String company;
   final String icon;
@@ -17,14 +17,22 @@ class Games extends StatelessWidget {
   });
 
   @override
+  State<Games> createState() => _GamesState();
+}
+
+class _GamesState extends State<Games> {
+  final GlobalKey<ExpansionTileCardState> gamesd = GlobalKey();
+  @override
   Widget build(BuildContext context) {
     return ExpansionTileCard(
+      contentPadding: const EdgeInsets.all(10),
+      key: gamesd,
       elevation: 0,
       animateTrailing: true,
-      subtitle: Text("Developed by $company"),
-      title: Text(title),
+      subtitle: Text("Developed by ${widget.company}"),
+      title: Text(widget.title),
       leading: CircleAvatar(
-        backgroundImage: AssetImage(icon),
+        backgroundImage: AssetImage(widget.icon),
       ),
       children: [
         const Divider(
@@ -35,12 +43,12 @@ class Games extends StatelessWidget {
           height: 200,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(coverpicture),
+              image: AssetImage(widget.coverpicture),
             ),
           ),
         ),
         Text(
-          title,
+          widget.title,
           style: const TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
@@ -49,9 +57,25 @@ class Games extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(13.0),
           child: Text(
-            about,
+            widget.about,
             style: const TextStyle(fontSize: 16),
             textAlign: TextAlign.left,
+          ),
+        ),
+        TextButton.icon(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red[300])),
+          onPressed: () {
+            gamesd.currentState?.collapse();
+          },
+          icon: const Icon(
+            Icons.close,
+            color: Colors.black,
+            size: 20,
+          ),
+          label: const Text(
+            'CLOSE',
+            style: TextStyle(color: Colors.black),
           ),
         ),
       ],
